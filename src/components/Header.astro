@@ -1,18 +1,19 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
+const { title } = Astro.props;
 ---
 
 <header>
 	<h2>
-		{SITE_TITLE}
+		{title ?? SITE_TITLE}
 	</h2>
 	<nav>
 		<HeaderLink href="/">Home</HeaderLink>
 		<HeaderLink href="/blog">Blog</HeaderLink>
 		<HeaderLink href="/about">About</HeaderLink>
-		<HeaderLink href="https://twitter.com/astrodotbuild" target="_blank">Twitter</HeaderLink>
-		<HeaderLink href="https://github.com/withastro/astro" target="_blank">GitHub</HeaderLink>
+		<HeaderLink href="https://github.com/lellingsen" target="_blank">GitHub</HeaderLink>
+		<HeaderLink href="https://www.linkedin.com/in/larsellingsen/" target="_blank">LinkedIn</HeaderLink>
 	</nav>
 </header>
 <style>
