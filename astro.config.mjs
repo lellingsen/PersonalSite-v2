@@ -7,4 +7,10 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
 	site: 'https://lars-ellingsen.dev',
 	integrations: [mdx(), sitemap()],
+	markdown: {
+		shikiConfig: {
+			theme: 'nord',
+			wrap: true,
+		},
+	},
 });
