@@ -21,6 +21,8 @@ All commands are run from the root of the project, from a terminal:
 
 ## Credit
 
+Thank you to [cageymage](https://github.com/cageymage) for his assitance in setting up the site.
+
 This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
 
 Created from the Astro Blog template; to create your own, use:
