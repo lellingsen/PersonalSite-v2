@@ -3,35 +3,35 @@ import { getCollection } from "astro:content";
 import PageLayout from "../layouts/Page.astro";
 
 const mostRecentPost = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 )[0];
 ---
 
 <PageLayout>
-  <h1>‍👋 Hello, friend!</h1>
-  <p>
-    Most recent post: <a href={`/blog/${mostRecentPost.slug}/`}
-      >{mostRecentPost.data.title}</a
-    >.
-  </p>
-  <p>
-    Welcome to my personal site, which is mainly used to house some of my
-    writing. I've been in the software industry for a little over a decade,
-    having spent around half that time as an engineer, and the other half as an
-    engineering manager. Currently, I'm a Senior Software Engineer at <a
-      href="https://lifeatdashlane.com/">Dashlane</a
-    >. Most of my writing is about writing software, technology, management, or
-    habits.
-  </p>
-  <p>
-    I also use this as a sandbox for me to try out some technology that I
-    wouldn't normally get to in my day job - like <a
-      href="https://docs.astro.build/">Astro</a
-    > and <a href="">Netlify</a>, which are the key building blocks of the
-    current version. A previous iteration was using Gatsby v2 and Tailwind.
-  </p>
-  <p>
-    Please feel free to look around, connect with me on LinkedIn, or submit a
-    pull request if you find a mistake!
-  </p>
+    <h1>‍👋 Hello, friend!</h1>
+    <p>
+        Most recent post: <a href={`/blog/${mostRecentPost.slug}/`}
+            >{mostRecentPost.data.title}</a
+        >.
+    </p>
+    <p>
+        Welcome to my personal site, which is mainly used to house some of my
+        writing. I've been in the software industry for a little over a decade,
+        having spent around half that time as an engineer, and the other half as
+        an engineering manager. Currently, I'm a Software Engineer at <a
+            href="https://datavant.com/about/careers/">Datavant</a
+        >. Most of my writing is about writing software, technology, management,
+        or habits.
+    </p>
+    <p>
+        I also use this as a sandbox for me to try out some technology that I
+        wouldn't normally get to in my day job - like <a
+            href="https://docs.astro.build/">Astro</a
+        > and <a href="">Netlify</a>, which are the key building blocks of the
+        current version. A previous iteration was using Gatsby v2 and Tailwind.
+    </p>
+    <p>
+        Please feel free to look around, connect with me on LinkedIn, or submit
+        a pull request if you find a mistake!
+    </p>
 </PageLayout>
