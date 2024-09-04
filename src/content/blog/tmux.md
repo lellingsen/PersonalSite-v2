@@ -19,4 +19,22 @@ right track to understanding what's going on!
 
 ## Typical Use Cases
 
+SSH
+
+Many sessions
+
+Contractors or personal projects
+
 ## How I use tmux
+
+Project windows
+
+Utility windows
+
+Doing as much as I can in the terminal
+
+## Next-level tmux
+
+Plugins
+
+Custom scripting
