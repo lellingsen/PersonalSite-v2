@@ -5,6 +5,7 @@ pubDate: "Mar 1 2023"
 heroImage: "/keyboard.jpg"
 tags:
   - vim
+  - terminal
 ---
 
 ## Context
