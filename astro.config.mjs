@@ -1,16 +1,22 @@
-import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
+import { defineConfig } from "astro/config";
+import mdx from "@astrojs/mdx";
 
-import sitemap from '@astrojs/sitemap';
+import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://lars-ellingsen.dev',
+	site: "https://lars-ellingsen.dev",
 	integrations: [mdx(), sitemap()],
 	markdown: {
 		shikiConfig: {
-			theme: 'nord',
+			theme: "nord",
 			wrap: true,
 		},
+	},
+	image: {
+		experimentalLayout: "constrained",
+	},
+	experimental: {
+		responsiveImages: true,
 	},
 });
