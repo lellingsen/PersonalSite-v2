@@ -1,0 +1,684 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wheel of Names</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Catppuccin Latte (light) ── */
+    :root {
+      --base:    #eff1f5;
+      --mantle:  #e6e9ef;
+      --crust:   #dce0e8;
+      --surface0:#ccd0da;
+      --surface1:#bcc0cc;
+      --surface2:#acb0be;
+      --overlay0:#9ca0b0;
+      --overlay1:#8c8fa1;
+      --overlay2:#7c7f93;
+      --subtext0:#6c6f85;
+      --subtext1:#5c5f77;
+      --text:    #4c4f69;
+      --lavender:#7287fd;
+      --blue:    #1e66f5;
+      --sapphire:#209fb5;
+      --sky:     #04a5e5;
+      --teal:    #179299;
+      --green:   #40a02b;
+      --yellow:  #df8e1d;
+      --peach:   #fe640b;
+      --maroon:  #e64553;
+      --red:     #d20f39;
+      --mauve:   #8839ef;
+      --pink:    #ea76cb;
+      --flamingo:#dd7878;
+      --rosewater:#dc8a78;
+    }
+
+    /* ── Catppuccin Frappe (dark) ── */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --base:    #303446;
+        --mantle:  #292c3c;
+        --crust:   #232634;
+        --surface0:#414559;
+        --surface1:#51576d;
+        --surface2:#626880;
+        --overlay0:#737994;
+        --overlay1:#838ba7;
+        --overlay2:#949cbb;
+        --subtext0:#a5adce;
+        --subtext1:#b5bfe2;
+        --text:    #c6d0f5;
+        --lavender:#babbf1;
+        --blue:    #8caaee;
+        --sapphire:#85c1dc;
+        --sky:     #99d1db;
+        --teal:    #81c8be;
+        --green:   #a6d189;
+        --yellow:  #e5c890;
+        --peach:   #ef9f76;
+        --maroon:  #ea999c;
+        --red:     #e78284;
+        --mauve:   #ca9ee6;
+        --pink:    #f4b8e4;
+        --flamingo:#eebebe;
+        --rosewater:#f2d5cf;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--base);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--mauve);
+      margin-bottom: 0.25rem;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--subtext0);
+      margin-bottom: 2.5rem;
+      text-align: center;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── Layout ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr minmax(280px, 360px);
+      gap: 2.5rem;
+      width: 100%;
+      max-width: 1100px;
+      align-items: start;
+    }
+
+    @media (max-width: 780px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    /* ── Wheel ── */
+    .wheel-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: min(480px, 92vw);
+      height: min(480px, 92vw);
+    }
+
+    #wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 6px var(--surface0),
+        0 0 0 10px var(--surface1),
+        0 20px 60px color-mix(in srgb, var(--mauve) 25%, transparent);
+      transition: box-shadow 0.3s;
+    }
+
+    /* pointer */
+    .pointer {
+      position: absolute;
+      top: 50%;
+      right: -18px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 18px solid transparent;
+      border-bottom: 18px solid transparent;
+      border-left: 36px solid var(--peach);
+      filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--peach) 50%, transparent));
+      z-index: 10;
+    }
+
+    /* spin button */
+    .spin-btn {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 0.75rem 3rem;
+      background: linear-gradient(135deg, var(--mauve), var(--blue));
+      color: var(--base);
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      box-shadow: 0 4px 20px color-mix(in srgb, var(--mauve) 35%, transparent);
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    }
+    .spin-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px color-mix(in srgb, var(--mauve) 45%, transparent);
+    }
+    .spin-btn:active:not(:disabled) { transform: translateY(0); }
+    .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--mantle);
+      border: 1px solid var(--surface0);
+      border-radius: 16px;
+      padding: 1.25rem;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--lavender);
+      margin-bottom: 0.85rem;
+      letter-spacing: 0.02em;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      background: var(--surface0);
+      color: var(--text);
+      border: 1px solid var(--surface1);
+      border-radius: 10px;
+      padding: 0.75rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    textarea:focus {
+      border-color: var(--mauve);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--mauve) 20%, transparent);
+    }
+
+    .hint { font-size: 0.75rem; color: var(--subtext0); margin-top: 0.5rem; }
+
+    /* winner card */
+    .winner-card {
+      display: none;
+      background: linear-gradient(135deg,
+        color-mix(in srgb, var(--mauve) 15%, var(--mantle)),
+        color-mix(in srgb, var(--blue) 10%, var(--mantle)));
+      border: 1px solid color-mix(in srgb, var(--mauve) 40%, var(--surface0));
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .winner-card.visible { display: block; }
+
+    @keyframes pop-in {
+      from { opacity: 0; transform: scale(0.85) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .winner-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--subtext0);
+      margin-bottom: 0.4rem;
+    }
+    .winner-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--mauve);
+      margin-bottom: 1rem;
+      word-break: break-word;
+    }
+    .quote-text {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--subtext1);
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+    .quote-attr {
+      font-size: 0.75rem;
+      color: var(--overlay1);
+      letter-spacing: 0.04em;
+    }
+
+    /* name list pills */
+    .name-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .pill {
+      background: var(--surface0);
+      color: var(--subtext1);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.78rem;
+    }
+
+    /* ── Confetti canvas ── */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <h1>Wheel of Names</h1>
+  <p class="subtitle">Spin · Discover · Be Inspired</p>
+
+  <div class="layout">
+    <!-- Wheel -->
+    <div class="wheel-wrap">
+      <div class="wheel-container">
+        <canvas id="wheel"></canvas>
+        <div class="pointer"></div>
+      </div>
+      <button class="spin-btn" id="spinBtn">✦ Spin the Wheel</button>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Name input -->
+      <div class="card">
+        <div class="card-title">✎ Names</div>
+        <textarea id="namesInput" placeholder="Enter names, one per line…&#10;&#10;Ada Lovelace&#10;Alan Turing&#10;Grace Hopper"></textarea>
+        <p class="hint">One name per line. At least 2 required.</p>
+      </div>
+
+      <!-- Current names -->
+      <div class="card" id="pillsCard" style="display:none">
+        <div class="card-title">☰ On the wheel</div>
+        <div class="name-pills" id="namePills"></div>
+      </div>
+
+      <!-- Winner + Quote -->
+      <div class="winner-card" id="winnerCard">
+        <div class="winner-label">🎉 Selected</div>
+        <div class="winner-name" id="winnerName"></div>
+        <div class="quote-text" id="quoteText"></div>
+        <div class="quote-attr" id="quoteAttr"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ── Catppuccin palette arrays for segment coloring ──
+const SEGMENT_COLORS_LIGHT = [
+  '#8839ef','#1e66f5','#04a5e5','#179299',
+  '#40a02b','#df8e1d','#fe640b','#d20f39',
+  '#ea76cb','#7287fd','#209fb5','#e64553',
+];
+const SEGMENT_COLORS_DARK = [
+  '#ca9ee6','#8caaee','#99d1db','#81c8be',
+  '#a6d189','#e5c890','#ef9f76','#e78284',
+  '#f4b8e4','#babbf1','#85c1dc','#ea999c',
+];
+
+function isDark() {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function segColors() {
+  return isDark() ? SEGMENT_COLORS_DARK : SEGMENT_COLORS_LIGHT;
+}
+
+// ── 50 famous quotes keyed to recognizable authors ──
+const QUOTES_BY_AUTHOR = {
+  default: [
+    { q: "The only way to do great work is to love what you do.", a: "Steve Jobs" },
+    { q: "In the middle of every difficulty lies opportunity.", a: "Albert Einstein" },
+    { q: "It does not matter how slowly you go as long as you do not stop.", a: "Confucius" },
+    { q: "Life is what happens when you're busy making other plans.", a: "John Lennon" },
+    { q: "The future belongs to those who believe in the beauty of their dreams.", a: "Eleanor Roosevelt" },
+    { q: "Spread love everywhere you go. Let no one ever come to you without leaving happier.", a: "Mother Teresa" },
+    { q: "When you reach the end of your rope, tie a knot in it and hang on.", a: "Franklin D. Roosevelt" },
+    { q: "Always remember that you are absolutely unique. Just like everyone else.", a: "Margaret Mead" },
+    { q: "Don't judge each day by the harvest you reap but by the seeds that you plant.", a: "Robert Louis Stevenson" },
+    { q: "The best and most beautiful things in the world cannot be seen or even touched — they must be felt with the heart.", a: "Helen Keller" },
+    { q: "It is during our darkest moments that we must focus to see the light.", a: "Aristotle" },
+    { q: "Whoever is happy will make others happy too.", a: "Anne Frank" },
+    { q: "Do not go where the path may lead, go instead where there is no path and leave a trail.", a: "Ralph Waldo Emerson" },
+    { q: "You will face many defeats in life, but never let yourself be defeated.", a: "Maya Angelou" },
+    { q: "The greatest glory in living lies not in never falling, but in rising every time we fall.", a: "Nelson Mandela" },
+    { q: "In the end, it's not the years in your life that count. It's the life in your years.", a: "Abraham Lincoln" },
+    { q: "Never let the fear of striking out keep you from playing the game.", a: "Babe Ruth" },
+    { q: "Life is either a daring adventure or nothing at all.", a: "Helen Keller" },
+    { q: "Many of life's failures are people who did not realize how close they were to success when they gave up.", a: "Thomas A. Edison" },
+    { q: "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.", a: "Dr. Seuss" },
+    { q: "If life were predictable it would cease to be life, and be without flavor.", a: "Eleanor Roosevelt" },
+    { q: "If you look at what you have in life, you'll always have more.", a: "Oprah Winfrey" },
+    { q: "If you want to live a happy life, tie it to a goal, not to people or things.", a: "Albert Einstein" },
+    { q: "Never let the fear of striking out keep you from playing the game.", a: "Babe Ruth" },
+    { q: "Money and success don't change people; they merely amplify what is already there.", a: "Will Smith" },
+    { q: "Your time is limited, so don't waste it living someone else's life.", a: "Steve Jobs" },
+    { q: "Not how long, but how well you have lived is the main thing.", a: "Seneca" },
+    { q: "If life were predictable it would cease to be life, and be without flavor.", a: "Eleanor Roosevelt" },
+    { q: "The whole secret of a successful life is to find out what is one's destiny to do, and then do it.", a: "Henry Ford" },
+    { q: "In order to write about life first you must live it.", a: "Ernest Hemingway" },
+    { q: "The big lesson in life, baby, is never be scared of anyone or anything.", a: "Frank Sinatra" },
+    { q: "Sing like no one's listening, love like you've never been hurt, dance like nobody's watching.", a: "Mark Twain" },
+    { q: "Curiosity about life in all of its aspects, I think, is still the secret of great creative people.", a: "Leo Burnett" },
+    { q: "Life is not measured by the number of breaths we take, but by the moments that take our breath away.", a: "Maya Angelou" },
+    { q: "If you want to make your dreams come true, the first thing you have to do is wake up.", a: "J.M. Power" },
+    { q: "Twenty years from now you will be more disappointed by the things you didn't do than by the ones you did.", a: "Mark Twain" },
+    { q: "You only live once, but if you do it right, once is enough.", a: "Mae West" },
+    { q: "Live in the sunshine, swim the sea, drink the wild air.", a: "Ralph Waldo Emerson" },
+    { q: "Go confidently in the direction of your dreams! Live the life you've imagined.", a: "Henry David Thoreau" },
+    { q: "Success is not final; failure is not fatal: it is the courage to continue that counts.", a: "Winston S. Churchill" },
+    { q: "It is our choices that show what we truly are, far more than our abilities.", a: "J.K. Rowling" },
+    { q: "I have learned over the years that when one's mind is made up, this diminishes fear.", a: "Rosa Parks" },
+    { q: "I alone cannot change the world, but I can cast a stone across the waters to create many ripples.", a: "Mother Teresa" },
+    { q: "Nothing is impossible, the word itself says 'I'm possible'!", a: "Audrey Hepburn" },
+    { q: "The question isn't who is going to let me; it's who is going to stop me.", a: "Ayn Rand" },
+    { q: "The most difficult thing is the decision to act, the rest is merely tenacity.", a: "Amelia Earhart" },
+    { q: "How wonderful it is that nobody need wait a single moment before starting to improve the world.", a: "Anne Frank" },
+    { q: "An unexamined life is not worth living.", a: "Socrates" },
+    { q: "Spread love everywhere you go; first of all in your own house.", a: "Mother Teresa" },
+    { q: "When you reach the end of your rope, tie a knot in it and hang on.", a: "Franklin D. Roosevelt" },
+  ]
+};
+
+function getQuoteFor(name) {
+  // Try to find a quote by this author name; otherwise random from pool
+  const pool = QUOTES_BY_AUTHOR.default;
+  // Check if any quote's author fuzzy-matches the name
+  const lower = name.toLowerCase();
+  const byAuthor = pool.filter(q => q.a.toLowerCase().includes(lower) || lower.includes(q.a.toLowerCase().split(' ').pop().toLowerCase()));
+  if (byAuthor.length > 0) {
+    return byAuthor[Math.floor(Math.random() * byAuthor.length)];
+  }
+  // Random quote, attribute to the winner
+  const q = pool[Math.floor(Math.random() * pool.length)];
+  return { q: q.q, a: q.a };
+}
+
+// ── Wheel drawing ──
+const canvas = document.getElementById('wheel');
+const ctx = canvas.getContext('2d');
+let names = [];
+let currentAngle = 0;
+let spinning = false;
+
+function getNames() {
+  return document.getElementById('namesInput').value
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean);
+}
+
+function drawWheel(angle) {
+  const size = canvas.width;
+  const cx = size / 2, cy = size / 2, r = size / 2 - 4;
+  ctx.clearRect(0, 0, size, size);
+
+  if (names.length === 0) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    const isDarkMode = isDark();
+    ctx.fillStyle = isDarkMode ? '#414559' : '#ccd0da';
+    ctx.fill();
+    ctx.fillStyle = isDarkMode ? '#a5adce' : '#6c6f85';
+    ctx.font = `bold ${size * 0.06}px 'DM Sans', sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Add names →', cx, cy);
+    return;
+  }
+
+  const arc = (Math.PI * 2) / names.length;
+  const colors = segColors();
+
+  names.forEach((name, i) => {
+    const start = angle + i * arc;
+    const end = start + arc;
+    const mid = start + arc / 2;
+
+    // segment
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, start, end);
+    ctx.closePath();
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
+    ctx.strokeStyle = isDark() ? '#303446' : '#eff1f5';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // label
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(mid);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#ffffff';
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 4;
+    const maxLen = 18;
+    const label = name.length > maxLen ? name.slice(0, maxLen - 1) + '…' : name;
+    const fontSize = Math.max(10, Math.min(16, size * 0.038 - names.length * 0.3));
+    ctx.font = `600 ${fontSize}px 'DM Sans', sans-serif`;
+    ctx.fillText(label, r - 12, 0);
+    ctx.restore();
+  });
+
+  // center cap
+  ctx.beginPath();
+  ctx.arc(cx, cy, size * 0.07, 0, Math.PI * 2);
+  ctx.fillStyle = isDark() ? '#303446' : '#eff1f5';
+  ctx.fill();
+  ctx.strokeStyle = isDark() ? '#626880' : '#acb0be';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.fillStyle = isDark() ? '#ca9ee6' : '#8839ef';
+  ctx.font = `bold ${size * 0.055}px 'Playfair Display', serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'transparent';
+  ctx.fillText('✦', cx, cy + 1);
+}
+
+function resizeCanvas() {
+  const size = canvas.parentElement.offsetWidth;
+  canvas.width = size;
+  canvas.height = size;
+  drawWheel(currentAngle);
+}
+
+// ── Confetti ──
+const confCanvas = document.getElementById('confetti-canvas');
+const confCtx = confCanvas.getContext('2d');
+let particles = [];
+
+function resizeConf() {
+  confCanvas.width = window.innerWidth;
+  confCanvas.height = window.innerHeight;
+}
+
+const CONF_COLORS_LIGHT = ['#8839ef','#1e66f5','#fe640b','#40a02b','#df8e1d','#ea76cb'];
+const CONF_COLORS_DARK  = ['#ca9ee6','#8caaee','#ef9f76','#a6d189','#e5c890','#f4b8e4'];
+
+function launchConfetti() {
+  resizeConf();
+  const colors = isDark() ? CONF_COLORS_DARK : CONF_COLORS_LIGHT;
+  particles = Array.from({ length: 140 }, () => ({
+    x: Math.random() * confCanvas.width,
+    y: -20,
+    r: Math.random() * 7 + 3,
+    d: Math.random() * 60 + 20,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    tilt: Math.random() * 10 - 10,
+    tiltSpeed: Math.random() * 0.1 + 0.05,
+    tiltAngle: 0,
+    vy: Math.random() * 3 + 2,
+    vx: Math.random() * 2 - 1,
+    life: 1,
+  }));
+  animateConf();
+}
+
+function animateConf() {
+  confCtx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+  let alive = false;
+  particles.forEach(p => {
+    p.y += p.vy;
+    p.x += p.vx;
+    p.tiltAngle += p.tiltSpeed;
+    p.tilt = Math.sin(p.tiltAngle) * 12;
+    p.vy += 0.05;
+    p.life -= 0.004;
+    if (p.y < confCanvas.height + 20 && p.life > 0) alive = true;
+    confCtx.save();
+    confCtx.globalAlpha = Math.max(0, p.life);
+    confCtx.beginPath();
+    confCtx.ellipse(p.x + p.tilt, p.y, p.r, p.r * 0.4, p.tiltAngle, 0, Math.PI * 2);
+    confCtx.fillStyle = p.color;
+    confCtx.fill();
+    confCtx.restore();
+  });
+  if (alive) requestAnimationFrame(animateConf);
+  else confCtx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+}
+
+// ── Spin logic ──
+function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+
+function spin() {
+  names = getNames();
+  if (names.length < 2) {
+    alert('Please enter at least 2 names!');
+    return;
+  }
+  if (spinning) return;
+  spinning = true;
+
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('winnerCard').classList.remove('visible');
+
+  const totalRotation = (Math.PI * 2) * (6 + Math.random() * 6);
+  const targetAngle = currentAngle + totalRotation;
+  const duration = 4000 + Math.random() * 1500;
+  const startAngle = currentAngle;
+  const startTime = performance.now();
+
+  function frame(now) {
+    const elapsed = now - startTime;
+    const t = Math.min(elapsed / duration, 1);
+    const eased = easeOut(t);
+    currentAngle = startAngle + totalRotation * eased;
+    drawWheel(currentAngle);
+
+    if (t < 1) {
+      requestAnimationFrame(frame);
+    } else {
+      currentAngle = targetAngle % (Math.PI * 2);
+      spinning = false;
+      document.getElementById('spinBtn').disabled = false;
+      showWinner();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function showWinner() {
+  // The pointer is at the right (3 o'clock = 0 radians in canvas terms).
+  // Segment i starts at currentAngle + i * arc.
+  const arc = (Math.PI * 2) / names.length;
+  const normalized = ((Math.PI * 2) - (currentAngle % (Math.PI * 2))) % (Math.PI * 2);
+  const winnerIdx = Math.floor(normalized / arc) % names.length;
+  const winner = names[winnerIdx];
+
+  document.getElementById('winnerName').textContent = winner;
+  const quote = getQuoteFor(winner);
+  document.getElementById('quoteText').textContent = `"${quote.q}"`;
+  document.getElementById('quoteAttr').textContent = `— ${quote.a}`;
+
+  const card = document.getElementById('winnerCard');
+  card.classList.remove('visible');
+  requestAnimationFrame(() => card.classList.add('visible'));
+
+  launchConfetti();
+}
+
+// ── Name pills ──
+function updatePills() {
+  names = getNames();
+  const pillsCard = document.getElementById('pillsCard');
+  const pillsEl = document.getElementById('namePills');
+  if (names.length === 0) {
+    pillsCard.style.display = 'none';
+    return;
+  }
+  pillsCard.style.display = 'block';
+  const colors = segColors();
+  pillsEl.innerHTML = names.map((n, i) =>
+    `<span class="pill" style="background:${colors[i % colors.length]}22;color:${colors[i % colors.length]};border:1px solid ${colors[i % colors.length]}44">${n}</span>`
+  ).join('');
+  drawWheel(currentAngle);
+}
+
+// ── Init ──
+window.addEventListener('resize', resizeCanvas);
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  drawWheel(currentAngle);
+  updatePills();
+});
+
+document.getElementById('namesInput').addEventListener('input', updatePills);
+document.getElementById('spinBtn').addEventListener('click', spin);
+
+// Default names
+document.getElementById('namesInput').value = [
+  'Ada Lovelace',
+  'Alan Turing',
+  'Grace Hopper',
+  'Nikola Tesla',
+  'Marie Curie',
+  'Albert Einstein',
+  'Carl Sagan',
+].join('\n');
+
+resizeConf();
+window.addEventListener('resize', resizeConf);
+
+// Wait for fonts then draw
+document.fonts.ready.then(() => {
+  resizeCanvas();
+  updatePills();
+});
+</script>
+</body>
+</html>
