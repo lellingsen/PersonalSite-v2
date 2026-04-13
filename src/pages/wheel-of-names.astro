@@ -3,9 +3,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wheel of Names</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!--
+    Things to do:
+    - Refactor the JS
+    - Use the base layout
+    - Move the CSS variables into the main CSS file
+  -->
 
   <style>
     /* ── Catppuccin Latte (light) ── */
@@ -73,7 +77,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Segoe UI', 'San Francisco', sans-serif;
       background: var(--base);
       color: var(--text);
       min-height: 100vh;
@@ -85,7 +89,7 @@
     }
 
     h1 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Georgia', serif;
       font-size: clamp(2rem, 5vw, 3.5rem);
       font-weight: 900;
       letter-spacing: -0.02em;
@@ -103,7 +107,6 @@
       text-transform: uppercase;
     }
 
-    /* ── Layout ── */
     .layout {
       display: grid;
       grid-template-columns: 1fr minmax(280px, 360px);
@@ -117,7 +120,6 @@
       .layout { grid-template-columns: 1fr; }
     }
 
-    /* ── Wheel ── */
     .wheel-wrap {
       display: flex;
       flex-direction: column;
@@ -142,7 +144,6 @@
       transition: box-shadow 0.3s;
     }
 
-    /* pointer */
     .pointer {
       position: absolute;
       top: 50%;
@@ -152,14 +153,13 @@
       height: 0;
       border-top: 18px solid transparent;
       border-bottom: 18px solid transparent;
-      border-left: 36px solid var(--peach);
+      border-right: 36px solid var(--peach);
       filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--peach) 50%, transparent));
       z-index: 10;
     }
 
-    /* spin button */
     .spin-btn {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Georgia', serif;
       font-size: 1.1rem;
       font-weight: 700;
       padding: 0.75rem 3rem;
@@ -179,7 +179,6 @@
     .spin-btn:active:not(:disabled) { transform: translateY(0); }
     .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ── Sidebar ── */
     .sidebar {
       display: flex;
       flex-direction: column;
@@ -194,7 +193,7 @@
     }
 
     .card-title {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Georgia', serif;
       font-size: 1rem;
       font-weight: 700;
       color: var(--lavender);
@@ -211,7 +210,7 @@
       border: 1px solid var(--surface1);
       border-radius: 10px;
       padding: 0.75rem;
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Segoe UI', 'San Francisco', sans-serif;
       font-size: 0.88rem;
       line-height: 1.6;
       outline: none;
@@ -222,9 +221,6 @@
       box-shadow: 0 0 0 3px color-mix(in srgb, var(--mauve) 20%, transparent);
     }
 
-    .hint { font-size: 0.75rem; color: var(--subtext0); margin-top: 0.5rem; }
-
-    /* winner card */
     .winner-card {
       display: none;
       background: linear-gradient(135deg,
@@ -251,7 +247,7 @@
       margin-bottom: 0.4rem;
     }
     .winner-name {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Georgia', serif;
       font-size: 1.75rem;
       font-weight: 900;
       color: var(--mauve);
@@ -271,7 +267,6 @@
       letter-spacing: 0.04em;
     }
 
-    /* name list pills */
     .name-pills {
       display: flex;
       flex-wrap: wrap;
@@ -285,7 +280,6 @@
       font-size: 0.78rem;
     }
 
-    /* ── Confetti canvas ── */
     #confetti-canvas {
       position: fixed;
       inset: 0;
@@ -317,7 +311,6 @@
       <div class="card">
         <div class="card-title">✎ Names</div>
         <textarea id="namesInput" placeholder="Enter names, one per line…&#10;&#10;Ada Lovelace&#10;Alan Turing&#10;Grace Hopper"></textarea>
-        <p class="hint">One name per line. At least 2 required.</p>
       </div>
 
       <!-- Current names -->
@@ -357,87 +350,91 @@ function segColors() {
 }
 
 // ── 50 famous quotes keyed to recognizable authors ──
-const QUOTES_BY_AUTHOR = {
-  default: [
-    { q: "The only way to do great work is to love what you do.", a: "Steve Jobs" },
-    { q: "In the middle of every difficulty lies opportunity.", a: "Albert Einstein" },
-    { q: "It does not matter how slowly you go as long as you do not stop.", a: "Confucius" },
-    { q: "Life is what happens when you're busy making other plans.", a: "John Lennon" },
-    { q: "The future belongs to those who believe in the beauty of their dreams.", a: "Eleanor Roosevelt" },
-    { q: "Spread love everywhere you go. Let no one ever come to you without leaving happier.", a: "Mother Teresa" },
-    { q: "When you reach the end of your rope, tie a knot in it and hang on.", a: "Franklin D. Roosevelt" },
-    { q: "Always remember that you are absolutely unique. Just like everyone else.", a: "Margaret Mead" },
-    { q: "Don't judge each day by the harvest you reap but by the seeds that you plant.", a: "Robert Louis Stevenson" },
-    { q: "The best and most beautiful things in the world cannot be seen or even touched — they must be felt with the heart.", a: "Helen Keller" },
-    { q: "It is during our darkest moments that we must focus to see the light.", a: "Aristotle" },
-    { q: "Whoever is happy will make others happy too.", a: "Anne Frank" },
-    { q: "Do not go where the path may lead, go instead where there is no path and leave a trail.", a: "Ralph Waldo Emerson" },
-    { q: "You will face many defeats in life, but never let yourself be defeated.", a: "Maya Angelou" },
-    { q: "The greatest glory in living lies not in never falling, but in rising every time we fall.", a: "Nelson Mandela" },
-    { q: "In the end, it's not the years in your life that count. It's the life in your years.", a: "Abraham Lincoln" },
-    { q: "Never let the fear of striking out keep you from playing the game.", a: "Babe Ruth" },
-    { q: "Life is either a daring adventure or nothing at all.", a: "Helen Keller" },
-    { q: "Many of life's failures are people who did not realize how close they were to success when they gave up.", a: "Thomas A. Edison" },
-    { q: "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.", a: "Dr. Seuss" },
-    { q: "If life were predictable it would cease to be life, and be without flavor.", a: "Eleanor Roosevelt" },
-    { q: "If you look at what you have in life, you'll always have more.", a: "Oprah Winfrey" },
-    { q: "If you want to live a happy life, tie it to a goal, not to people or things.", a: "Albert Einstein" },
-    { q: "Never let the fear of striking out keep you from playing the game.", a: "Babe Ruth" },
-    { q: "Money and success don't change people; they merely amplify what is already there.", a: "Will Smith" },
-    { q: "Your time is limited, so don't waste it living someone else's life.", a: "Steve Jobs" },
-    { q: "Not how long, but how well you have lived is the main thing.", a: "Seneca" },
-    { q: "If life were predictable it would cease to be life, and be without flavor.", a: "Eleanor Roosevelt" },
-    { q: "The whole secret of a successful life is to find out what is one's destiny to do, and then do it.", a: "Henry Ford" },
-    { q: "In order to write about life first you must live it.", a: "Ernest Hemingway" },
-    { q: "The big lesson in life, baby, is never be scared of anyone or anything.", a: "Frank Sinatra" },
-    { q: "Sing like no one's listening, love like you've never been hurt, dance like nobody's watching.", a: "Mark Twain" },
-    { q: "Curiosity about life in all of its aspects, I think, is still the secret of great creative people.", a: "Leo Burnett" },
-    { q: "Life is not measured by the number of breaths we take, but by the moments that take our breath away.", a: "Maya Angelou" },
-    { q: "If you want to make your dreams come true, the first thing you have to do is wake up.", a: "J.M. Power" },
-    { q: "Twenty years from now you will be more disappointed by the things you didn't do than by the ones you did.", a: "Mark Twain" },
-    { q: "You only live once, but if you do it right, once is enough.", a: "Mae West" },
-    { q: "Live in the sunshine, swim the sea, drink the wild air.", a: "Ralph Waldo Emerson" },
-    { q: "Go confidently in the direction of your dreams! Live the life you've imagined.", a: "Henry David Thoreau" },
-    { q: "Success is not final; failure is not fatal: it is the courage to continue that counts.", a: "Winston S. Churchill" },
-    { q: "It is our choices that show what we truly are, far more than our abilities.", a: "J.K. Rowling" },
-    { q: "I have learned over the years that when one's mind is made up, this diminishes fear.", a: "Rosa Parks" },
-    { q: "I alone cannot change the world, but I can cast a stone across the waters to create many ripples.", a: "Mother Teresa" },
-    { q: "Nothing is impossible, the word itself says 'I'm possible'!", a: "Audrey Hepburn" },
-    { q: "The question isn't who is going to let me; it's who is going to stop me.", a: "Ayn Rand" },
-    { q: "The most difficult thing is the decision to act, the rest is merely tenacity.", a: "Amelia Earhart" },
-    { q: "How wonderful it is that nobody need wait a single moment before starting to improve the world.", a: "Anne Frank" },
-    { q: "An unexamined life is not worth living.", a: "Socrates" },
-    { q: "Spread love everywhere you go; first of all in your own house.", a: "Mother Teresa" },
-    { q: "When you reach the end of your rope, tie a knot in it and hang on.", a: "Franklin D. Roosevelt" },
-  ]
-};
+const QUOTES_BY_AUTHOR = [
+  { q: "The only way to do great work is to love what you do.", a: "Steve Jobs" },
+  { q: "In the middle of every difficulty lies opportunity.", a: "Albert Einstein" },
+  { q: "It does not matter how slowly you go as long as you do not stop.", a: "Confucius" },
+  { q: "Life is what happens when you're busy making other plans.", a: "John Lennon" },
+  { q: "The future belongs to those who believe in the beauty of their dreams.", a: "Eleanor Roosevelt" },
+  { q: "Spread love everywhere you go. Let no one ever come to you without leaving happier.", a: "Mother Teresa" },
+  { q: "When you reach the end of your rope, tie a knot in it and hang on.", a: "Franklin D. Roosevelt" },
+  { q: "Always remember that you are absolutely unique. Just like everyone else.", a: "Margaret Mead" },
+  { q: "Don't judge each day by the harvest you reap but by the seeds that you plant.", a: "Robert Louis Stevenson" },
+  { q: "The best and most beautiful things in the world cannot be seen or even touched — they must be felt with the heart.", a: "Helen Keller" },
+  { q: "It is during our darkest moments that we must focus to see the light.", a: "Aristotle" },
+  { q: "Whoever is happy will make others happy too.", a: "Anne Frank" },
+  { q: "Do not go where the path may lead, go instead where there is no path and leave a trail.", a: "Ralph Waldo Emerson" },
+  { q: "You will face many defeats in life, but never let yourself be defeated.", a: "Maya Angelou" },
+  { q: "The greatest glory in living lies not in never falling, but in rising every time we fall.", a: "Nelson Mandela" },
+  { q: "In the end, it's not the years in your life that count. It's the life in your years.", a: "Abraham Lincoln" },
+  { q: "Never let the fear of striking out keep you from playing the game.", a: "Babe Ruth" },
+  { q: "Life is either a daring adventure or nothing at all.", a: "Helen Keller" },
+  { q: "Many of life's failures are people who did not realize how close they were to success when they gave up.", a: "Thomas A. Edison" },
+  { q: "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.", a: "Dr. Seuss" },
+  { q: "If life were predictable it would cease to be life, and be without flavor.", a: "Eleanor Roosevelt" },
+  { q: "If you look at what you have in life, you'll always have more.", a: "Oprah Winfrey" },
+  { q: "If you want to live a happy life, tie it to a goal, not to people or things.", a: "Albert Einstein" },
+  { q: "Never let the fear of striking out keep you from playing the game.", a: "Babe Ruth" },
+  { q: "Money and success don't change people; they merely amplify what is already there.", a: "Will Smith" },
+  { q: "Your time is limited, so don't waste it living someone else's life.", a: "Steve Jobs" },
+  { q: "Not how long, but how well you have lived is the main thing.", a: "Seneca" },
+  { q: "If life were predictable it would cease to be life, and be without flavor.", a: "Eleanor Roosevelt" },
+  { q: "The whole secret of a successful life is to find out what is one's destiny to do, and then do it.", a: "Henry Ford" },
+  { q: "In order to write about life first you must live it.", a: "Ernest Hemingway" },
+  { q: "The big lesson in life, baby, is never be scared of anyone or anything.", a: "Frank Sinatra" },
+  { q: "Sing like no one's listening, love like you've never been hurt, dance like nobody's watching.", a: "Mark Twain" },
+  { q: "Curiosity about life in all of its aspects, I think, is still the secret of great creative people.", a: "Leo Burnett" },
+  { q: "Life is not measured by the number of breaths we take, but by the moments that take our breath away.", a: "Maya Angelou" },
+  { q: "If you want to make your dreams come true, the first thing you have to do is wake up.", a: "J.M. Power" },
+  { q: "Twenty years from now you will be more disappointed by the things you didn't do than by the ones you did.", a: "Mark Twain" },
+  { q: "You only live once, but if you do it right, once is enough.", a: "Mae West" },
+  { q: "Live in the sunshine, swim the sea, drink the wild air.", a: "Ralph Waldo Emerson" },
+  { q: "Go confidently in the direction of your dreams! Live the life you've imagined.", a: "Henry David Thoreau" },
+  { q: "Success is not final; failure is not fatal: it is the courage to continue that counts.", a: "Winston S. Churchill" },
+  { q: "It is our choices that show what we truly are, far more than our abilities.", a: "J.K. Rowling" },
+  { q: "I have learned over the years that when one's mind is made up, this diminishes fear.", a: "Rosa Parks" },
+  { q: "I alone cannot change the world, but I can cast a stone across the waters to create many ripples.", a: "Mother Teresa" },
+  { q: "Nothing is impossible, the word itself says 'I'm possible'!", a: "Audrey Hepburn" },
+  { q: "The question isn't who is going to let me; it's who is going to stop me.", a: "Ayn Rand" },
+  { q: "The most difficult thing is the decision to act, the rest is merely tenacity.", a: "Amelia Earhart" },
+  { q: "How wonderful it is that nobody need wait a single moment before starting to improve the world.", a: "Anne Frank" },
+  { q: "An unexamined life is not worth living.", a: "Socrates" },
+  { q: "Spread love everywhere you go; first of all in your own house.", a: "Mother Teresa" },
+  { q: "When you reach the end of your rope, tie a knot in it and hang on.", a: "Franklin D. Roosevelt" },
+];
 
-function getQuoteFor(name) {
-  // Try to find a quote by this author name; otherwise random from pool
-  const pool = QUOTES_BY_AUTHOR.default;
-  // Check if any quote's author fuzzy-matches the name
-  const lower = name.toLowerCase();
-  const byAuthor = pool.filter(q => q.a.toLowerCase().includes(lower) || lower.includes(q.a.toLowerCase().split(' ').pop().toLowerCase()));
-  if (byAuthor.length > 0) {
-    return byAuthor[Math.floor(Math.random() * byAuthor.length)];
-  }
-  // Random quote, attribute to the winner
-  const q = pool[Math.floor(Math.random() * pool.length)];
+function getQuote() {
+  const q = QUOTES_BY_AUTHOR[Math.floor(Math.random() * QUOTES_BY_AUTHOR.length)];
   return { q: q.q, a: q.a };
 }
 
 // ── Wheel drawing ──
 const canvas = document.getElementById('wheel');
-const ctx = canvas.getContext('2d');
-let names = [];
+const ctx = canvas?.getContext('2d');
+let names: string[] = [];
 let currentAngle = 0;
 let spinning = false;
 
 function getNames() {
-  return document.getElementById('namesInput').value
+  return document.getElementById('namesInput')?.value
     .split('\n')
     .map(s => s.trim())
     .filter(Boolean);
+}
+
+const STORAGE_KEY = 'wheel-of-names';
+
+function saveNames(names: string[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(names));
+}
+
+function loadNames() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
 }
 
 function drawWheel(angle) {
@@ -452,7 +449,7 @@ function drawWheel(angle) {
     ctx.fillStyle = isDarkMode ? '#414559' : '#ccd0da';
     ctx.fill();
     ctx.fillStyle = isDarkMode ? '#a5adce' : '#6c6f85';
-    ctx.font = `bold ${size * 0.06}px 'DM Sans', sans-serif`;
+    ctx.font = `bold ${size * 0.06}px 'Segoe UI', 'San Francisco', sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('Add names →', cx, cy);
@@ -484,12 +481,12 @@ function drawWheel(angle) {
     ctx.rotate(mid);
     ctx.textAlign = 'right';
     ctx.fillStyle = '#ffffff';
-    ctx.shadowColor = 'rgba(0,0,0,0.4)';
-    ctx.shadowBlur = 4;
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
     const maxLen = 18;
     const label = name.length > maxLen ? name.slice(0, maxLen - 1) + '…' : name;
-    const fontSize = Math.max(10, Math.min(16, size * 0.038 - names.length * 0.3));
-    ctx.font = `600 ${fontSize}px 'DM Sans', sans-serif`;
+    const fontSize = Math.round(Math.max(10, Math.min(16, size * 0.038 - names.length * 0.3)));
+    ctx.font = `400 ${fontSize}px 'Segoe UI', 'San Francisco', sans-serif`;
     ctx.fillText(label, r - 12, 0);
     ctx.restore();
   });
@@ -504,7 +501,7 @@ function drawWheel(angle) {
   ctx.stroke();
 
   ctx.fillStyle = isDark() ? '#ca9ee6' : '#8839ef';
-  ctx.font = `bold ${size * 0.055}px 'Playfair Display', serif`;
+  ctx.font = `bold ${size * 0.055}px 'Georgia', serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.shadowColor = 'transparent';
@@ -558,8 +555,8 @@ function animateConf() {
     p.x += p.vx;
     p.tiltAngle += p.tiltSpeed;
     p.tilt = Math.sin(p.tiltAngle) * 12;
-    p.vy += 0.05;
-    p.life -= 0.004;
+    p.vy += 0.01;
+    p.life -= 0.001;
     if (p.y < confCanvas.height + 20 && p.life > 0) alive = true;
     confCtx.save();
     confCtx.globalAlpha = Math.max(0, p.life);
@@ -584,6 +581,7 @@ function spin() {
   }
   if (spinning) return;
   spinning = true;
+  // save names to local storage
 
   document.getElementById('spinBtn').disabled = true;
   document.getElementById('winnerCard').classList.remove('visible');
@@ -622,7 +620,7 @@ function showWinner() {
   const winner = names[winnerIdx];
 
   document.getElementById('winnerName').textContent = winner;
-  const quote = getQuoteFor(winner);
+  const quote = getQuote();
   document.getElementById('quoteText').textContent = `"${quote.q}"`;
   document.getElementById('quoteAttr').textContent = `— ${quote.a}`;
 
@@ -633,9 +631,7 @@ function showWinner() {
   launchConfetti();
 }
 
-// ── Name pills ──
 function updatePills() {
-  names = getNames();
   const pillsCard = document.getElementById('pillsCard');
   const pillsEl = document.getElementById('namePills');
   if (names.length === 0) {
@@ -647,6 +643,12 @@ function updatePills() {
   pillsEl.innerHTML = names.map((n, i) =>
     `<span class="pill" style="background:${colors[i % colors.length]}22;color:${colors[i % colors.length]};border:1px solid ${colors[i % colors.length]}44">${n}</span>`
   ).join('');
+}
+
+// ── Name pills ──
+function updateUI() {
+  names = getNames();
+  updatePills();
   drawWheel(currentAngle);
 }
 
@@ -654,30 +656,28 @@ function updatePills() {
 window.addEventListener('resize', resizeCanvas);
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
   drawWheel(currentAngle);
-  updatePills();
+  updateUI();
 });
 
-document.getElementById('namesInput').addEventListener('input', updatePills);
-document.getElementById('spinBtn').addEventListener('click', spin);
+document.getElementById('namesInput')?.addEventListener('input', () => {
+  saveNames(getNames());
+  updateUI();
+});
 
-// Default names
-document.getElementById('namesInput').value = [
-  'Ada Lovelace',
-  'Alan Turing',
-  'Grace Hopper',
-  'Nikola Tesla',
-  'Marie Curie',
-  'Albert Einstein',
-  'Carl Sagan',
-].join('\n');
+document.getElementById('spinBtn')?.addEventListener('click', spin);
 
 resizeConf();
 window.addEventListener('resize', resizeConf);
 
 // Wait for fonts then draw
 document.fonts.ready.then(() => {
+  const saved = loadNames();
+  if (saved.length > 0) {
+    document.getElementById('namesInput').value = saved.join('\n');
+  }
+
   resizeCanvas();
-  updatePills();
+  updateUI();
 });
 </script>
 </body>
