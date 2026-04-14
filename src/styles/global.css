@@ -150,3 +150,14 @@ a {
 a:visited {
   color: var(--visited-link-color);
 }
+
+[data-astro-image] {
+  width: 100%;
+  height: auto;
+  object-fit: var(--fit, cover);
+  object-position: var(--pos, center);
+}
+
+[data-astro-image="constrained"] {
+  max-width: min(var(--w), 100%);
+}
