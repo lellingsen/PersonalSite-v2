@@ -9,8 +9,12 @@ export default defineConfig({
 	integrations: [mdx(), sitemap()],
 	markdown: {
 		shikiConfig: {
-			theme: "nord",
+			themes: {
+				light: 'rose-pine-dawn',
+				dark: 'rose-pine-moon',
+			},
 			wrap: true,
+			defaultColor: false,
 		},
 	},
 	image: {
