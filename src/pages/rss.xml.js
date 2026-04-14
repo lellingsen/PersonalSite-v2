@@ -12,7 +12,7 @@ export async function GET(context) {
 			.sort((postA, postB) => postB.data.pubDate - postA.data.pubDate)
 			.map((post) => ({
 				...post.data,
-				link: `/blog/${post.slug}/`,
+				link: `/blog/${post.id}/`,
 			})),
 	});
 }

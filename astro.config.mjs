@@ -18,9 +18,7 @@ export default defineConfig({
 		},
 	},
 	image: {
-		experimentalLayout: "constrained",
-	},
-	experimental: {
-		responsiveImages: true,
+		layout: "constrained",
+		responsiveStyles: true,
 	},
 });
