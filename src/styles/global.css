@@ -131,12 +131,15 @@ pre > code {
 }
 
 blockquote {
-  border: 1px solid var(--font-color);
-  border-radius: 0.25rem;
-  background-color: var(--code-background-color);
-  padding: 0 1rem;
-  margin: 2rem 0.5rem;
+  background-color: var(--color-base);
+  color: var(--subtle-text-color);
+  padding: 1rem;
   font-style: italic;
+  margin: 0;
+
+  & > p {
+    margin: 0;
+  }
 }
 
 hr {
