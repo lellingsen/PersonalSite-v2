@@ -8,9 +8,9 @@ const mostRecentPost = (await getCollection("blog")).sort(
 ---
 
 <PageLayout>
-    <h1>‍👋 Hello, friend!</h1>
+    <h1>👋 Hello, friend!</h1>
     <p>
-        Most recent post: <a href={`/blog/${mostRecentPost.slug}/`}
+        Most recent post: <a href={`/blog/${mostRecentPost.id}/`}
             >{mostRecentPost.data.title}</a
         >.
     </p>
