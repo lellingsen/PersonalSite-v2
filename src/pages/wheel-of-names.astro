@@ -1,100 +1,11 @@
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wheel of Names</title>
+---
+import PageLayout from "../layouts/Page.astro";
+---
 
-  <!--
-    Things to do:
-    - Refactor the JS
-    - Use the base layout
-    - Move the CSS variables into the main CSS file
-  -->
-
+<PageLayout>
+  <div class="full-width">
   <style>
-    /* ── Catppuccin Latte (light) ── */
-    :root {
-      --base:    #eff1f5;
-      --mantle:  #e6e9ef;
-      --crust:   #dce0e8;
-      --surface0:#ccd0da;
-      --surface1:#bcc0cc;
-      --surface2:#acb0be;
-      --overlay0:#9ca0b0;
-      --overlay1:#8c8fa1;
-      --overlay2:#7c7f93;
-      --subtext0:#6c6f85;
-      --subtext1:#5c5f77;
-      --text:    #4c4f69;
-      --lavender:#7287fd;
-      --blue:    #1e66f5;
-      --sapphire:#209fb5;
-      --sky:     #04a5e5;
-      --teal:    #179299;
-      --green:   #40a02b;
-      --yellow:  #df8e1d;
-      --peach:   #fe640b;
-      --maroon:  #e64553;
-      --red:     #d20f39;
-      --mauve:   #8839ef;
-      --pink:    #ea76cb;
-      --flamingo:#dd7878;
-      --rosewater:#dc8a78;
-    }
-
-    /* ── Catppuccin Frappe (dark) ── */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --base:    #303446;
-        --mantle:  #292c3c;
-        --crust:   #232634;
-        --surface0:#414559;
-        --surface1:#51576d;
-        --surface2:#626880;
-        --overlay0:#737994;
-        --overlay1:#838ba7;
-        --overlay2:#949cbb;
-        --subtext0:#a5adce;
-        --subtext1:#b5bfe2;
-        --text:    #c6d0f5;
-        --lavender:#babbf1;
-        --blue:    #8caaee;
-        --sapphire:#85c1dc;
-        --sky:     #99d1db;
-        --teal:    #81c8be;
-        --green:   #a6d189;
-        --yellow:  #e5c890;
-        --peach:   #ef9f76;
-        --maroon:  #ea999c;
-        --red:     #e78284;
-        --mauve:   #ca9ee6;
-        --pink:    #f4b8e4;
-        --flamingo:#eebebe;
-        --rosewater:#f2d5cf;
-      }
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', 'San Francisco', sans-serif;
-      background: var(--base);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem 4rem;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    h1 {
-      font-family: 'Georgia', serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      color: var(--mauve);
-      margin-bottom: 0.25rem;
+    .page-title {
       text-align: center;
     }
 
@@ -138,9 +49,9 @@
       height: 100%;
       border-radius: 50%;
       box-shadow:
-        0 0 0 6px var(--surface0),
-        0 0 0 10px var(--surface1),
-        0 20px 60px color-mix(in srgb, var(--mauve) 25%, transparent);
+        0 0 0 6px var(--color-base),
+        0 0 0 10px var(--color-surface),
+        0 20px 60px color-mix(in srgb, var(--color-rose) 25%, transparent);
       transition: box-shadow 0.3s;
     }
 
@@ -153,8 +64,8 @@
       height: 0;
       border-top: 18px solid transparent;
       border-bottom: 18px solid transparent;
-      border-right: 36px solid var(--peach);
-      filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--peach) 50%, transparent));
+      border-right: 36px solid var(--color-gold);
+      filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--color-love) 50%, transparent));
       z-index: 10;
     }
 
@@ -163,18 +74,18 @@
       font-size: 1.1rem;
       font-weight: 700;
       padding: 0.75rem 3rem;
-      background: linear-gradient(135deg, var(--mauve), var(--blue));
-      color: var(--base);
+      background: linear-gradient(135deg, var(--color-iris), var(--color-pine));
+      color: var(--color-base);
       border: none;
       border-radius: 999px;
       cursor: pointer;
       letter-spacing: 0.04em;
-      box-shadow: 0 4px 20px color-mix(in srgb, var(--mauve) 35%, transparent);
+      box-shadow: 0 4px 20px color-mix(in srgb, var(--color-rose) 35%, transparent);
       transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
     }
     .spin-btn:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px color-mix(in srgb, var(--mauve) 45%, transparent);
+      box-shadow: 0 8px 30px color-mix(in srgb, var(--color-rose) 45%, transparent);
     }
     .spin-btn:active:not(:disabled) { transform: translateY(0); }
     .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -186,47 +97,42 @@
     }
 
     .card {
-      background: var(--mantle);
-      border: 1px solid var(--surface0);
+      background: var(--color-base);
+      border: 1px solid var(--color-surface);
       border-radius: 16px;
       padding: 1.25rem;
     }
 
     .card-title {
-      font-family: 'Georgia', serif;
-      font-size: 1rem;
       font-weight: 700;
-      color: var(--lavender);
-      margin-bottom: 0.85rem;
-      letter-spacing: 0.02em;
+      color: var(--color-iris);
     }
 
     textarea {
-      width: 100%;
+      width: calc(100% - 1.5rem);
       min-height: 180px;
       resize: vertical;
-      background: var(--surface0);
-      color: var(--text);
-      border: 1px solid var(--surface1);
+      background: var(--color-overlay);
+      color: var(--font-color);
+      border: 1px solid var(--color-highlight-med);
       border-radius: 10px;
       padding: 0.75rem;
-      font-family: 'Segoe UI', 'San Francisco', sans-serif;
       font-size: 0.88rem;
       line-height: 1.6;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     textarea:focus {
-      border-color: var(--mauve);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--mauve) 20%, transparent);
+      border-color: var(--color-gold);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-gold) 20%, transparent);
     }
 
     .winner-card {
       display: none;
       background: linear-gradient(135deg,
-        color-mix(in srgb, var(--mauve) 15%, var(--mantle)),
-        color-mix(in srgb, var(--blue) 10%, var(--mantle)));
-      border: 1px solid color-mix(in srgb, var(--mauve) 40%, var(--surface0));
+        color-mix(in srgb, var(--color-rose) 15%, var(--color-base)),
+        color-mix(in srgb, var(--color-foam) 10%, var(--color-base)));
+      border: 1px solid color-mix(in srgb, var(--color-rose) 40%, var(--color-surface));
       border-radius: 16px;
       padding: 1.5rem;
       text-align: center;
@@ -243,41 +149,26 @@
       font-size: 0.7rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--subtext0);
+      color: var(--color-subtle);
       margin-bottom: 0.4rem;
     }
     .winner-name {
-      font-family: 'Georgia', serif;
       font-size: 1.75rem;
       font-weight: 900;
-      color: var(--mauve);
+      color: var(--color-love);
       margin-bottom: 1rem;
       word-break: break-word;
     }
     .quote-text {
-      font-size: 0.88rem;
-      line-height: 1.7;
-      color: var(--subtext1);
+      font-size: 1rem;
+      color: var(--color-subtle);
       font-style: italic;
       margin-bottom: 0.5rem;
     }
     .quote-attr {
       font-size: 0.75rem;
-      color: var(--overlay1);
-      letter-spacing: 0.04em;
-    }
-
-    .name-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-    .pill {
-      background: var(--surface0);
-      color: var(--subtext1);
-      border-radius: 999px;
-      padding: 0.25rem 0.75rem;
-      font-size: 0.78rem;
+      color: var(--color-subtle);
+      letter-spacing: 0.1rem;
     }
 
     #confetti-canvas {
@@ -287,12 +178,10 @@
       z-index: 999;
     }
   </style>
-</head>
-<body>
 
   <canvas id="confetti-canvas"></canvas>
 
-  <h1>Wheel of Names</h1>
+  <h2 class="page-title">Wheel of Names</h2>
   <p class="subtitle">Spin · Discover · Be Inspired</p>
 
   <div class="layout">
@@ -313,12 +202,6 @@
         <textarea id="namesInput" placeholder="Enter names, one per line…&#10;&#10;Ada Lovelace&#10;Alan Turing&#10;Grace Hopper"></textarea>
       </div>
 
-      <!-- Current names -->
-      <div class="card" id="pillsCard" style="display:none">
-        <div class="card-title">☰ On the wheel</div>
-        <div class="name-pills" id="namePills"></div>
-      </div>
-
       <!-- Winner + Quote -->
       <div class="winner-card" id="winnerCard">
         <div class="winner-label">🎉 Selected</div>
@@ -330,16 +213,14 @@
   </div>
 
 <script>
-// ── Catppuccin palette arrays for segment coloring ──
+// ── Rose-Pine palette arrays for segment coloring ──
 const SEGMENT_COLORS_LIGHT = [
-  '#8839ef','#1e66f5','#04a5e5','#179299',
-  '#40a02b','#df8e1d','#fe640b','#d20f39',
-  '#ea76cb','#7287fd','#209fb5','#e64553',
+  '#b4637a', '#ea9d34','#d7827e',
+  '#286983','#56949f','#907aa9',
 ];
 const SEGMENT_COLORS_DARK = [
-  '#ca9ee6','#8caaee','#99d1db','#81c8be',
-  '#a6d189','#e5c890','#ef9f76','#e78284',
-  '#f4b8e4','#babbf1','#85c1dc','#ea999c',
+  '#eb6f92','#f6c177','#ea9a97',
+  '#3e8fb0','#9ccfd8','#c4a7e7',
 ];
 
 function isDark() {
@@ -491,20 +372,18 @@ function drawWheel(angle) {
     ctx.restore();
   });
 
-  // center cap
+  // center background
   ctx.beginPath();
   ctx.arc(cx, cy, size * 0.07, 0, Math.PI * 2);
-  ctx.fillStyle = isDark() ? '#303446' : '#eff1f5';
+  ctx.fillStyle = isDark() ? '#232136' : '#faf4ed';
   ctx.fill();
-  ctx.strokeStyle = isDark() ? '#626880' : '#acb0be';
+  // center border
+  ctx.strokeStyle = isDark() ? '#56526e' : '#cecacd';
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  ctx.fillStyle = isDark() ? '#ca9ee6' : '#8839ef';
-  ctx.font = `bold ${size * 0.055}px 'Georgia', serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.shadowColor = 'transparent';
+  // center color
+  ctx.fillStyle = isDark() ? '#c4a7e7' : '#907aa9';
   ctx.fillText('✦', cx, cy + 1);
 }
 
@@ -525,12 +404,9 @@ function resizeConf() {
   confCanvas.height = window.innerHeight;
 }
 
-const CONF_COLORS_LIGHT = ['#8839ef','#1e66f5','#fe640b','#40a02b','#df8e1d','#ea76cb'];
-const CONF_COLORS_DARK  = ['#ca9ee6','#8caaee','#ef9f76','#a6d189','#e5c890','#f4b8e4'];
-
 function launchConfetti() {
   resizeConf();
-  const colors = isDark() ? CONF_COLORS_DARK : CONF_COLORS_LIGHT;
+  const colors = isDark() ? SEGMENT_COLORS_DARK : SEGMENT_COLORS_LIGHT;
   particles = Array.from({ length: 140 }, () => ({
     x: Math.random() * confCanvas.width,
     y: -20,
@@ -631,24 +507,8 @@ function showWinner() {
   launchConfetti();
 }
 
-function updatePills() {
-  const pillsCard = document.getElementById('pillsCard');
-  const pillsEl = document.getElementById('namePills');
-  if (names.length === 0) {
-    pillsCard.style.display = 'none';
-    return;
-  }
-  pillsCard.style.display = 'block';
-  const colors = segColors();
-  pillsEl.innerHTML = names.map((n, i) =>
-    `<span class="pill" style="background:${colors[i % colors.length]}22;color:${colors[i % colors.length]};border:1px solid ${colors[i % colors.length]}44">${n}</span>`
-  ).join('');
-}
-
-// ── Name pills ──
 function updateUI() {
   names = getNames();
-  updatePills();
   drawWheel(currentAngle);
 }
 
@@ -680,5 +540,5 @@ document.fonts.ready.then(() => {
   updateUI();
 });
 </script>
-</body>
-</html>
+</div>
+</PageLayout>
