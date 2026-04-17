@@ -27,8 +27,7 @@
   --font-color: var(--color-text);
   --subtle-text-color: var(--color-subtle);
   --link-color: var(--color-foam);
-  --visited-link-color: var(--color-pine);
-  --code-background-color: var(--color-surface);
+  --visited-link-color: var(--color-iris);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -78,19 +77,19 @@ h5 {
 }
 
 h1 {
-  font-size: 3.052rem;
+  font-size: 3.rem;
 }
 
 h2 {
-  font-size: 2.441rem;
+  font-size: 2.2rem;
 }
 
 h3 {
-  font-size: 1.953rem;
+  font-size: 1.9rem;
 }
 
 h4 {
-  font-size: 1.563rem;
+  font-size: 1.6rem;
 }
 
 h5 {
@@ -110,6 +109,7 @@ code {
   background-color: var(--shiki-light-bg);
   color: var(--shiki-light);
 }
+
 .astro-code-themes span {
   color: var(--shiki-light);
 }
@@ -118,8 +118,13 @@ html.dark .astro-code-themes {
   background-color: var(--shiki-dark-bg);
   color: var(--shiki-dark);
 }
+
 html.dark .astro-code-themes span {
   color: var(--shiki-dark);
+}
+
+.site-title {
+  color: var(--color-gold);
 }
 
 pre {
@@ -154,6 +159,10 @@ a:visited {
   color: var(--visited-link-color);
 }
 
+footer {
+  color: var(--color-muted);
+}
+
 [data-astro-image] {
   width: 100%;
   height: auto;
@@ -163,4 +172,9 @@ a:visited {
 
 [data-astro-image="constrained"] {
   max-width: min(var(--w), 100%);
+}
+
+.full-width {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
 }
