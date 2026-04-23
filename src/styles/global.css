@@ -77,7 +77,7 @@ h5 {
 }
 
 h1 {
-  font-size: 3.rem;
+  font-size: 3rem;
 }
 
 h2 {
@@ -176,5 +176,9 @@ footer {
 
 .full-width {
   width: 100vw;
-  margin-left: calc(50% - 50vw);
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
