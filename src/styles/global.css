@@ -127,6 +127,15 @@ html.dark .astro-code-themes span {
   color: var(--color-gold);
 }
 
+.title {
+  color: var(--color-love);
+}
+
+.post-description {
+  color: var(--color-rose);
+  margin-top: 1rem;
+}
+
 pre {
   padding: 1rem;
 }
