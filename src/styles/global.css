@@ -132,7 +132,7 @@ html.dark .astro-code-themes span {
 }
 
 .post-description {
-  color: var(--color-rose);
+  color: var(--color-subtle);
   margin-top: 1rem;
 }
 
