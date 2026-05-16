@@ -1,7 +1,7 @@
 ---
 title: LeetCode Daily Challenges
-description: "Learning algorithms, and about what other companies do for interviews"
-pubDate: "Feb 26 2021"
+description: 'Learning algorithms, and about what other companies do for interviews'
+pubDate: 'Feb 26 2021'
 tags:
   - ruby
   - algorithms

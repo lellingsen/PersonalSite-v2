@@ -1,8 +1,8 @@
 ---
 title: My Start in Vim
-description: "How I began to use Vim as my daily driver"
-pubDate: "Mar 1 2023"
-heroImage: "/keyboard.jpg"
+description: 'How I began to use Vim as my daily driver'
+pubDate: 'Mar 1 2023'
+heroImage: '/keyboard.jpg'
 tags:
   - vim
   - terminal

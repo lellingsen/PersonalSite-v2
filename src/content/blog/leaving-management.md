@@ -1,7 +1,7 @@
 ---
 title: Leaving Management
-description: "Summarizing why I left management to return to engineering"
-pubDate: "Dec 11 2022"
+description: 'Summarizing why I left management to return to engineering'
+pubDate: 'Dec 11 2022'
 tags:
   - management
   - engineering

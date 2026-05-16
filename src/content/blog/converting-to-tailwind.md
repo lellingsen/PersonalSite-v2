@@ -1,7 +1,7 @@
 ---
 title: Converting to Tailwind CSS
-description: "Ripping out all of the default styles and replacing with Tailwind CSS"
-pubDate: "Feb 6 2021"
+description: 'Ripping out all of the default styles and replacing with Tailwind CSS'
+pubDate: 'Feb 6 2021'
 tags:
   - tailwind
   - css

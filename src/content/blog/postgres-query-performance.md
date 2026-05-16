@@ -1,7 +1,7 @@
 ---
 title: A Postgres Query Performance Pitfall
-description: "How a one-line problem stumped me for months"
-pubDate: "Feb 15 2024"
+description: 'How a one-line problem stumped me for months'
+pubDate: 'Feb 15 2024'
 tags:
   - performance
   - database

@@ -1,7 +1,7 @@
 ---
 title: tmux and Claude Code
-description: "How an old technology is helping me navigate the AI Era"
-pubDate: "Apr 24 2026"
+description: 'How an old technology is helping me navigate the AI Era'
+pubDate: 'Apr 24 2026'
 tags:
   - ai
   - tmux

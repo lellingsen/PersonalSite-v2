@@ -1,7 +1,7 @@
 ---
 title: Adding Tags to Blog Posts
 description: "An attempt without looking up someone else's solution"
-pubDate: "Feb 14 2021"
+pubDate: 'Feb 14 2021'
 tags:
   - typescript
   - gatsby
@@ -19,14 +19,13 @@ The first step I took was to add the tags themselves to the posts I've made so f
 ```yaml
 ---
 title: Adding Tags to Blog Posts
-date: "2021-02-14"
+date: '2021-02-14'
 description: "An attempt without looking up someone else's solution"
 tags:
   - typescript
   - gatsby
   - graphql
 ---
-
 ```
 
 ## Creating a "tag" Template File
@@ -106,13 +105,13 @@ I went looking all over for documentation on what that error could mean, and kep
 After much frustration, I eventually realized that I had made a fairly simple mistake. Rather than:
 
 ```ts
-const allTags = result.data.allMarkdownRemark.group
+const allTags = result.data.allMarkdownRemark.group;
 ```
 
 I had forgotten to drill down into the object after messing with GraphiQL, and had left it at:
 
 ```ts
-const allTags = result.data
+const allTags = result.data;
 ```
 
 Once I fixed that, the warning went away, and my tag pages were building and reachable! My silly mistake had meant that there was just nothing proper to iterate over, so my creation of the pages was never firing.

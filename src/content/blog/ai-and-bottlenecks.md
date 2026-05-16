@@ -1,7 +1,7 @@
 ---
 title: Agentic Coding and Bottlenecks
-description: "What are the knock-on effects of speeding up one area of the dev process?"
-pubDate: "Apr 17 2026"
+description: 'What are the knock-on effects of speeding up one area of the dev process?'
+pubDate: 'Apr 17 2026'
 tags:
   - ai
   - process

@@ -1,7 +1,7 @@
 ---
 title: Creating the Navigation
-description: "Making a nav menu from scratch using Tailwind"
-pubDate: "Mar 3 2021"
+description: 'Making a nav menu from scratch using Tailwind'
+pubDate: 'Mar 3 2021'
 tags:
   - gatsby
   - tailwind
@@ -53,22 +53,22 @@ With this decision it was simple enough to place it below the header element, an
 Now that I had made the decision to animate the hamburger menu with JavaScript, I needed to figure out how to do that. Knowing vanilla JS would be easy enough to add a class to the label, which could then be used to style the animation, I wrote a quick script to do so:
 
 ```js
-const menuToggle = document.getElementById("menu-toggle-label")
+const menuToggle = document.getElementById('menu-toggle-label');
 menuToggle.onclick = () => {
-  const openClass = "menu-open"
+  const openClass = 'menu-open';
   if (menuToggle.classList.contains(openClass)) {
-    menuToggle.classList.remove(openClass)
+    menuToggle.classList.remove(openClass);
   } else {
-    menuToggle.classList.add(openClass)
+    menuToggle.classList.add(openClass);
   }
-}
+};
 ```
 
 This was my first time writing JavaScript for Gatsby, and I needed to figure out how to hook it in. My initial thought based on experience with standard sites was to put it in an external file and link it in. A quick search made me aware of how to do this using `react-helmet`, like so:
 
 ```jsx
 <Helmet>
-  <script src={withPrefix("script.js")} type="text/javascript" />
+  <script src={withPrefix('script.js')} type="text/javascript" />
 </Helmet>
 ```
 
