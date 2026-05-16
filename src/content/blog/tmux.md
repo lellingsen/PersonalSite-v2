@@ -1,7 +1,7 @@
 ---
 title: tmux - What is it, and why use it?
-description: "Another excellent tool for the terminal"
-pubDate: "Sep 9 2024"
+description: 'Another excellent tool for the terminal'
+pubDate: 'Sep 9 2024'
 tags:
   - tmux
   - vim

@@ -1,7 +1,7 @@
 ---
 title: The Manager's Path
-description: "A highlight of my takeaways from this great book"
-pubDate: "Jul 16 2021"
+description: 'A highlight of my takeaways from this great book'
+pubDate: 'Jul 16 2021'
 tags:
   - management
   - leadership

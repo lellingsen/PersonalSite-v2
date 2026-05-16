@@ -1,7 +1,7 @@
 ---
 title: Switching to a Split, Columnar Keyboard and Colemak layout
-description: "Why would one do this to themselves?"
-pubDate: "Oct 30 2025"
+description: 'Why would one do this to themselves?'
+pubDate: 'Oct 30 2025'
 tags:
   - keyboard
   - vim
@@ -89,7 +89,7 @@ to have everything I was looking for:
 - Compact layout
 - Replaceable, standard parts (Choc switches and keycaps)
 - Don't need to build it myself (I have done this, but it ends up taking me
-forever to find the time)
+  forever to find the time)
 - Tenting/angle options
 
 Originally I was also intending to have my board be wireless. However, after

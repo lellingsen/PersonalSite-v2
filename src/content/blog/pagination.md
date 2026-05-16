@@ -1,7 +1,7 @@
 ---
 title: Creating Pagination for the Blog
-description: "Switching from a static index page to generated files"
-pubDate: "May 16 2021"
+description: 'Switching from a static index page to generated files'
+pubDate: 'May 16 2021'
 tags:
   - gatsby
   - javascript

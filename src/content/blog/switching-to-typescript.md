@@ -1,7 +1,7 @@
 ---
 title: Switching to TypeScript
-description: "Replacing the default .js files with TypeScript in Gatsby"
-pubDate: "Feb 2 2021"
+description: 'Replacing the default .js files with TypeScript in Gatsby'
+pubDate: 'Feb 2 2021'
 tags:
   - javascript
   - typescript
@@ -23,13 +23,13 @@ Something I noticed quickly was that the examples were making many of the interf
 ```ts
 interface Props {
   data: {
-    allMarkdownRemark: any
+    allMarkdownRemark: any;
     site: {
       siteMetadata: {
-        title: string
-      }
-    }
-  }
+        title: string;
+      };
+    };
+  };
 }
 ```
 
@@ -40,27 +40,27 @@ So, what road should I go down? Should I favor the static, predictable nature of
 ```ts
 interface Post {
   frontmatter: {
-    title: string
-    date: string
-    description: string
-  }
+    title: string;
+    date: string;
+    description: string;
+  };
   fields: {
-    slug: string
-  }
-  excerpt: string
+    slug: string;
+  };
+  excerpt: string;
 }
 
 interface Props {
   data: {
     allMarkdownRemark: {
-      nodes: Array<Post>
-    }
+      nodes: Array<Post>;
+    };
     site: {
       siteMetadata: {
-        title: string
-      }
-    }
-  }
+        title: string;
+      };
+    };
+  };
 }
 ```
 

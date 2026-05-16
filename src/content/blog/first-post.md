@@ -1,7 +1,7 @@
 ---
 title: Welcome!
-description: "Is this thing on?"
-pubDate: "Jan 31 2021"
+description: 'Is this thing on?'
+pubDate: 'Jan 31 2021'
 tags:
   - background
   - gatsby

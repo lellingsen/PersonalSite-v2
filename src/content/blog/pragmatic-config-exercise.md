@@ -1,7 +1,7 @@
 ---
 title: Pragmatic Programmer - YAML to JSON
-description: "Actually following along with what a book asks me to do"
-pubDate: "Feb 11 2021"
+description: 'Actually following along with what a book asks me to do'
+pubDate: 'Feb 11 2021'
 tags:
   - books
   - ruby
